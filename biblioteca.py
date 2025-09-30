@@ -1,7 +1,10 @@
 def carica_da_file(file_path):
     """Carica i libri dal file"""
     # TODO
-
+    try:
+        pass
+    except FileNotFoundError:
+        return none
 
 def aggiungi_libro(biblioteca, titolo, autore, anno, pagine, sezione, file_path):
     """Aggiunge un libro nella biblioteca"""
@@ -9,8 +12,12 @@ def aggiungi_libro(biblioteca, titolo, autore, anno, pagine, sezione, file_path)
 
 
 def cerca_libro(biblioteca, titolo):
-    """Cerca un libro nella biblioteca dato il titolo"""
-    # TODO
+    risultato=none
+    for line in biblioteca:
+        line=line.strip.split
+        if line[0]==titolo:
+            risultato=line
+    return risultato
 
 
 def elenco_libri_sezione_per_titolo(biblioteca, sezione):
