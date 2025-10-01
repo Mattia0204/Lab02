@@ -64,6 +64,7 @@ def cerca_libro(biblioteca, titolo):
 
 
 def elenco_libri_sezione_per_titolo(biblioteca, sezione):
+    sezione = str(sezione)
     if sezione not in biblioteca:
         return []
     lista=[libro["titolo"] for libro in biblioteca[sezione]]
