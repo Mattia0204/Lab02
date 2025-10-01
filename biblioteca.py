@@ -1,8 +1,18 @@
 def carica_da_file(file_path):
     """Carica i libri dal file"""
     # TODO
+    biblioteca={}
     try:
-        pass
+        with open(percorso_file, "r", encoding="utf-8") as file:
+            for line in file:
+                line=line.strip().split(";")
+                if not line:
+                    continue
+                titolo, autore, sezione = line
+                if sezione not in biblioteca:
+                    biblioteca[sezione] = []
+                biblioteca[sezione].append({"titolo": titolo.strip(),"autore": autore.strip()})
+            return biblioteca
     except FileNotFoundError:
         return none
 
