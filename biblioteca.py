@@ -1,24 +1,39 @@
 def carica_da_file(file_path):
-    """Carica i libri dal file"""
-    # TODO
     biblioteca={}
+    titolo = []
+    autore = []
+    anno=[]
+    pagine=[]
+    sezione = []
     try:
-        with open(percorso_file, "r", encoding="utf-8") as file:
+        with open(file_path, "r", encoding="utf-8") as file:
             for line in file:
                 line=line.strip().split(";")
                 if not line:
                     continue
-                titolo, autore, sezione = line
+                titolo=line[0]
+                autore = line[1]
+                anno = line [2]
+                pagine = line[3]
+                sezione = line[4]
                 if sezione not in biblioteca:
                     biblioteca[sezione] = []
-                biblioteca[sezione].append({"titolo": titolo.strip(),"autore": autore.strip()})
+                biblioteca[sezione].append({"titolo": titolo.strip(),"autore": autore.strip(),"anno": anno.strip(),"pagine": pagine.strip()})
             return biblioteca
     except FileNotFoundError:
-        return none
+        return None
+
+
 
 def aggiungi_libro(biblioteca, titolo, autore, anno, pagine, sezione, file_path):
-    """Aggiunge un libro nella biblioteca"""
-    # TODO
+    libro=[titolo, autore, anno, pagine, sezione]
+    if libro not in biblioteca:
+        with open(file_path, "a", encoding="utf-8") as file:
+            biblioteca[sezione].append({"titolo": titolo.strip(), "autore": autore.strip(), "anno": anno.strip(), "pagine": pagine.strip()})
+    else:
+        libro=None
+    return libro
+
 
 
 def cerca_libro(biblioteca, titolo):
