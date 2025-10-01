@@ -1,24 +1,24 @@
 def carica_da_file(file_path):
     biblioteca={}
-    titolo = []
-    autore = []
-    anno=[]
-    pagine=[]
-    sezione = []
     try:
         with open(file_path, "r", encoding="utf-8") as file:
             for line in file:
-                line=line.strip().split(";")
+                line=line.strip()
                 if not line:
                     continue
-                titolo=line[0]
-                autore = line[1]
-                anno = line [2]
-                pagine = line[3]
-                sezione = line[4]
+                parti=line.split(";")
+                titolo, autore, anno, pagine, sezione = [parti.strip() for parti in line]
+                try:
+                    anno = int(anno)
+                except ValueError:
+                    anno = anno
+                try:
+                    pagine = int(pagine)
+                except ValueError:
+                    pagine = pagine
                 if sezione not in biblioteca:
                     biblioteca[sezione] = []
-                biblioteca[sezione].append({"titolo": titolo.strip(),"autore": autore.strip(),"anno": anno.strip(),"pagine": pagine.strip()})
+                biblioteca[sezione].append({"titolo": titolo,"autore": autore,"anno": anno,"pagine": pagine})
             return biblioteca
     except FileNotFoundError:
         return None
@@ -26,31 +26,45 @@ def carica_da_file(file_path):
 
 
 def aggiungi_libro(biblioteca, titolo, autore, anno, pagine, sezione, file_path):
-    libro=[titolo, autore, anno, pagine, sezione]
-    if libro not in biblioteca:
+    if sezione not in biblioteca:
+        biblioteca[sezione] = []
+    if libro in biblioteca[sezione]:
+        if libro["titolo"].lower() == titolo.lower() and libro["autore"].lower() == autore.lower():
+            return None
+    try:
+        anno = int(anno)
+    except (ValueError, TypeError):
+        anno = anno
+    try:
+        pagine = int(pagine)
+    except (ValueError, TypeError):
+        pagine = pagine
+    nuovo = {"titolo": titolo, "autore": autore, "anno": anno, "pagine": pagine}
+    biblioteca[sezione].append(nuovo)
+    try:
         with open(file_path, "a", encoding="utf-8") as file:
-            biblioteca[sezione].append({"titolo": titolo.strip(), "autore": autore.strip(), "anno": anno.strip(), "pagine": pagine.strip()})
-    else:
-        libro=None
-    return libro
-
-
+            file.write(f"{titolo};{autore};{anno};{pagine};{sezione}\n")
+    except Exception as e:
+        biblioteca[sezione].remove(nuovo)
+        print("Errore scrittura file:", e)
+        return None
+    return nuovo
 
 def cerca_libro(biblioteca, titolo):
-    libro=None
-    for line in biblioteca:
-        line=line.strip.split
-        if line[0]==titolo:
-            libro=line
-    return libro
+    titolo=titolo.lower()
+    for sezione, libri in biblioteca.items():
+        for libro in libri:
+            if libro["titolo"].lower() == titolo:
+                risultato = libro.copy()
+                risultato["sezione"] = sezione
+                return risultato
+    return None
 
 
 def elenco_libri_sezione_per_titolo(biblioteca, sezione):
-    lista=[]
-    for line in biblioteca:
-        line=line.strip.split
-        if line[4]==sezione:
-            lista.append(line)
+    if sezione not in biblioteca:
+        return []
+    lista=[libro["titolo"] for libro in biblioteca[sezione]]
     lista.sort()
     return lista
 
