@@ -37,17 +37,23 @@ def aggiungi_libro(biblioteca, titolo, autore, anno, pagine, sezione, file_path)
 
 
 def cerca_libro(biblioteca, titolo):
-    risultato=none
+    libro=None
     for line in biblioteca:
         line=line.strip.split
         if line[0]==titolo:
-            risultato=line
-    return risultato
+            libro=line
+    return libro
 
 
 def elenco_libri_sezione_per_titolo(biblioteca, sezione):
-    """Ordina i titoli di una data sezione della biblioteca in ordine alfabetico"""
-    # TODO
+    lista=[]
+    for line in biblioteca:
+        line=line.strip.split
+        if line[4]==sezione:
+            lista.append(line)
+    lista.sort()
+    return lista
+
 
 
 def main():
