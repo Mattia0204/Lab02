@@ -6,8 +6,10 @@ def carica_da_file(file_path):
                 line=line.strip()
                 if not line:
                     continue
-                parti=line.split(";")
-                titolo, autore, anno, pagine, sezione = [parti.strip() for parti in line]
+                parti=line.split(",")
+                if len(parti) != 5:
+                    continue
+                titolo, autore, anno, pagine, sezione = [p.strip() for p in parti]
                 try:
                     anno = int(anno)
                 except ValueError:
@@ -28,7 +30,7 @@ def carica_da_file(file_path):
 def aggiungi_libro(biblioteca, titolo, autore, anno, pagine, sezione, file_path):
     if sezione not in biblioteca:
         biblioteca[sezione] = []
-    if libro in biblioteca[sezione]:
+    for libro in biblioteca[sezione]:
         if libro["titolo"].lower() == titolo.lower() and libro["autore"].lower() == autore.lower():
             return None
     try:
